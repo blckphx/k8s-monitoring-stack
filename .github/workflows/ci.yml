@@ -39,4 +39,3 @@ jobs:
             echo "No values file found at helm/values/monitoring.values.yaml"
             echo "Skipping template check."
           fi
-
