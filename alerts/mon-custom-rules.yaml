@@ -1,0 +1,28 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: mon-custom-rules
+  namespace: monitoring
+  labels:
+    release: mon
+spec:
+  groups:
+    - name: demo.rules
+      rules:
+        - alert: HighPodRestartRate
+          expr: increase(kube_pod_container_status_restarts_total[5m]) > 3
+          for: 2m
+          labels:
+            severity: warning
+          annotations:
+            summary: High restart rate detected
+            description: "Pod {{ $labels.pod }} restarted more than 3 times in 5m in ns {{ $labels.namespace }}"
+        - alert: HighNodeCPUUtilization
+          expr: 100 * (1 - avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m]))) > 85
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: High node CPU utilization
+            description: "Node {{ $labels.instance }} CPU > 85% for 5m"
+

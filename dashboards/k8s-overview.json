@@ -1,0 +1,55 @@
+{
+  "title": "Kubernetes Overview (Demo)",
+  "timezone": "browser",
+  "version": 1,
+  "schemaVersion": 39,
+  "refresh": "10s",
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "Node CPU Utilization %",
+      "targets": [
+        {
+          "expr": "100 * (1 - avg by(instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[5m])))",
+          "legendFormat": "{{instance}}"
+        }
+      ],
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 }
+    },
+    {
+      "type": "timeseries",
+      "title": "Pod Restarts (5m)",
+      "targets": [
+        {
+          "expr": "increase(kube_pod_container_status_restarts_total[5m])",
+          "legendFormat": "{{namespace}}/{{pod}}"
+        }
+      ],
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 }
+    },
+    {
+      "type": "timeseries",
+      "title": "Pod CPU (cores)",
+      "targets": [
+        {
+          "expr": "sum by(pod) (rate(container_cpu_usage_seconds_total{container!=\"\"}[5m]))",
+          "legendFormat": "{{pod}}"
+        }
+      ],
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 }
+    },
+    {
+      "type": "timeseries",
+      "title": "Pod Memory (bytes)",
+      "targets": [
+        {
+          "expr": "sum by(pod) (container_memory_working_set_bytes{container!=\"\"})",
+          "legendFormat": "{{pod}}"
+        }
+      ],
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 }
+    }
+  ]
+}
+
+
