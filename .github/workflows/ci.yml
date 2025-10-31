@@ -1,9 +1,10 @@
+---
 name: ci
 
-on:
+"on":
   push:
-    branches: [ main ]
-  pull_request:
+    branches: [main]
+  pull_request: {}
 
 jobs:
   lint-and-template:
@@ -19,7 +20,8 @@ jobs:
 
       - name: Add Helm repos
         run: |
-          helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+          helm repo add prometheus-community \
+            https://prometheus-community.github.io/helm-charts
           helm repo update
 
       - name: Install yamllint
@@ -34,7 +36,7 @@ jobs:
             helm template mon prometheus-community/kube-prometheus-stack \
               -f helm/values/monitoring.values.yaml -n monitoring > /dev/null
           else
-            echo "No values file found at helm/values/monitoring.values.yaml; skipping template check."
+            echo "No values file found at helm/values/monitoring.values.yaml"
+            echo "Skipping template check."
           fi
-
 

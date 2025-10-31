@@ -1,3 +1,4 @@
+---
 grafana:
   adminPassword: admin
   service:
@@ -11,5 +12,3 @@ prometheus:
 
 alertmanager:
   enabled: true
-
-

@@ -1,3 +1,4 @@
+---
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
@@ -16,13 +17,16 @@ spec:
             severity: warning
           annotations:
             summary: High restart rate detected
-            description: "Pod {{ $labels.pod }} restarted more than 3 times in 5m in ns {{ $labels.namespace }}"
+            description: >
+              Pod {{ $labels.pod }} restarted more than 3 times in 5m in ns
+              {{ $labels.namespace }}
         - alert: HighNodeCPUUtilization
-          expr: 100 * (1 - avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m]))) > 85
+          expr: >
+            100 * (1 - avg by(instance)
+            (rate(node_cpu_seconds_total{mode="idle"}[5m]))) > 85
           for: 5m
           labels:
             severity: warning
           annotations:
             summary: High node CPU utilization
             description: "Node {{ $labels.instance }} CPU > 85% for 5m"
-
